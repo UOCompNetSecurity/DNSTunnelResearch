@@ -4,4 +4,4 @@
 ## Project for Computer and Network Security Winter 2026
 - Members: Josiah Kitchin, Kai Hogan, Kobe Pane
 
-- NOTE: a Python3 virtual environment (venv) is suggested, and the required dependencies are located in "requirements.txt".
+NOTE: a Python3 virtual environment (venv) is suggested, and the required dependencies are located in "requirements.txt".
