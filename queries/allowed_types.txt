@@ -1,0 +1,9 @@
+    A = 1      #Domain to IPV4
+    AAAA = 28  #DOmain to IPV6
+    NS = 2     #Specify Nameserver
+    SOA = 6    #Authority 
+    MX = 15    #Mail
+    PTR = 12   #Reverse DNS 
+    CNAME = 5  #Canonical name 
+
+

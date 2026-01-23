@@ -3,30 +3,33 @@ Resolver -> Detector Event for each DNS query
 """
 
 from dataclasses import dataclass
-from typing import Optional, List
+from typing import Optional 
 from enum import Enum
 
-class DNSProtocol (str, Enum):
+class DNSProtocol(str, Enum):
     UDP = "UDP"
     TCP = "TCP"
+
+
+# Only allowed types. 
+class DNSRRType(Enum): 
+    A = 1      #Domain to IPV4
+    AAAA = 28  #DOmain to IPV6
+    NS = 2     #Specify Nameserver
+    SOA = 6    #Authority 
+    MX = 15    #Mail
+    PTR = 12   #Reverse DNS 
+    CNAME = 5  #Canonical name 
+
 
 @dataclass(frozen=True)
 class DNSQueryEvent:
     timestamp: float
     client_ip: str
-    client_id: Optional[str]
     qname: str
-    qtype: str
-    qclass: str
+    rrtype: DNSRRType
     protocol: DNSProtocol
     query_size: int
     edns_size: Optional[int]
-    recursion_desired: bool
-    labels: List[str]
-    label_lengths: List[int]
-    num_labels: int
-    max_label_length: int
-    rcode: Optional[str]
-    ttl: Optional[int]
-    response_size: Optional[int]
-    cache_hit: Optional[bool]
+
+
