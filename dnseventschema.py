@@ -8,7 +8,7 @@ from enum import Enum
 
 
 # Only allowed types. 
-class DNSRRType(Enum): 
+class DNSQType(Enum): 
     A = 1      #Domain to IPV4
     AAAA = 28  #DOmain to IPV6
     NS = 2     #Specify Nameserver
@@ -23,7 +23,7 @@ class DNSQueryEvent:
     timestamp: float
     client_ip: str
     qname: str
-    rrtype: DNSRRType
+    qtype: DNSQType
     query_size: int
     edns_size: Optional[int]
 
