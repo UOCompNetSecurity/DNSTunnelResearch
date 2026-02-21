@@ -13,7 +13,8 @@ DEFAULT_MALICIOUS = [
     "q+Z+x37fBA.hidemyself.org",
     "q+Z+3X71BA.hidemyself.org",
     "q+Z+838LBA.hidemyself.org",
-    "q+Z++38TBA.hidemyself.org"
+    "q+Z++38TBA.hidemyself.org",
+    "f3fVvnjMafjHfalasr.hhjamgew.com"
 ]
 
 DEFAULT_SAFE = [
@@ -26,7 +27,8 @@ DEFAULT_SAFE = [
     "autoblog.com",
     "spiegel.de",
     "ic-live.com",
-    "zenmate.com"
+    "zenmate.com",
+    "www.google.com"
 ]
 
 
@@ -39,7 +41,7 @@ def main(data_path: str, query_column: str, label_column: str, m_indicator: str,
     elif torch.backends.mps.is_available():
         device = "mps"
     else:
-        "cpu"
+        device = "cpu"
     model = AutoModelForSequenceClassification.from_pretrained(model_name, num_labels=2).to(device)
     model.eval() # Set model to evaluation mode
     print(f"Finished Initializing Model on {device}...")
@@ -99,7 +101,7 @@ def default_tests():
     elif torch.backends.mps.is_available():
         device = "mps"
     else:
-        "cpu"
+        device = "cpu"
     model = AutoModelForSequenceClassification.from_pretrained(model_name, num_labels=2).to(device)
     model.eval()
 
