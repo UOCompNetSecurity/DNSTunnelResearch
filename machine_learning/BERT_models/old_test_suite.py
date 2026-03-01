@@ -29,21 +29,25 @@ DEFAULT_SAFE = [
     "zenmate.com"
 ]
 
-def print_stats(label: str, preds: list, threshold: float) -> None:
-    if not preds:
-        print(f"  No {label} queries found.")
-        return
-    arr = np.array(preds)
-    above = int(np.sum(arr > threshold))
-    below = len(arr) - above
-    print(f"  Count:              {len(arr)}")
-    print(f"  Mean:               {arr.mean():.4f}")
-    print(f"  Std Dev:            {arr.std():.4f}")
-    print(f"  Min:                {arr.min():.4f}")
-    print(f"  Max:                {arr.max():.4f}")
-    print(f"  Median:             {np.median(arr):.4f}")
-    print(f"  Above Threshold:    {above} ({100 * above / len(arr):.1f}%)")
-    print(f"  Below Threshold:    {below} ({100 * below / len(arr):.1f}%)")
+def print_stats(label: str, preds: list) -> None:
+        if not preds:
+            print(f"  No {label} queries found.")
+            return
+        arr = np.array(preds)
+        above = int(np.sum(arr > threshold))
+        below = len(arr) - above
+        print(f"  Count:              {len(arr)}")
+        print(f"  Mean:               {arr.mean():.4f}")
+        print(f"  Std Dev:            {arr.std():.4f}")
+        print(f"  Min:                {arr.min():.4f}")
+        print(f"  Max:                {arr.max():.4f}")
+        print(f"  Median:             {np.median(arr):.4f}")
+        print(f"  Above Threshold:    {above} ({100 * above / len(arr):.1f}%)")
+        print(f"  Below Threshold:    {below} ({100 * below / len(arr):.1f}%)")
+
+def train(input_file: str, output_file: str, arg_type: str = "Default") -> None:
+    training, val = create_dataset(input_file)
+    train_and_save(training, val, output_file, arg_type)
 
 def predict_default(pretraining_file: str) -> None:
     hardware = determine_device()
@@ -124,23 +128,33 @@ def predict_queryfile_distribution(pretraining_file: str, input_file: str, thres
     print(f"{'='*45}")
     print(f"\n  Malicious Queries:")
     print(f"  {'-'*40}")
-    print_stats("malicious", malicious_predictions, threshold)
+    print_stats("malicious", malicious_predictions)
     print(f"\n  Benign Queries:")
     print(f"  {'-'*40}")
-    print_stats("benign", benign_predictions, threshold)
+    print_stats("benign", benign_predictions)
     print(f"\n{'='*45}\n")
 
 if __name__ == "__main__":
     if len(sys.argv) < 2:
         print("Usage:")
+        print("  python3 test_suite.py train <input_file> <output_file> [arg_type]")
         print("  python3 test_suite.py predict_default <pretraining_file>")
         print("  python3 test_suite.py predict_file <pretraining_file> <input_file> <threshold> [iterations]")
         print("  python3 test_suite.py predict_distribution <pretraining_file> <input_file> <threshold> [iterations]")
+        print("arg_type options: Default, Fast, HighAccuracy, LowMemory, Regularized")
         sys.exit(1)
 
     command = sys.argv[1]
 
-    if command == "predict_default":
+    if command == "train":
+        if len(sys.argv) < 4 or len(sys.argv) > 5:
+            print("Usage: python3 test_suite.py train <input_file> <output_file> [arg_type]")
+            print("arg_type options: Default, Fast, HighAccuracy, LowMemory, Regularized")
+            sys.exit(1)
+        arg_type = sys.argv[4] if len(sys.argv) == 5 else "Default"
+        train(sys.argv[2], sys.argv[3], arg_type)
+
+    elif command == "predict_default":
         if len(sys.argv) != 3:
             print("Usage: python3 test_suite.py predict_default <pretraining_file>")
             sys.exit(1)
@@ -168,5 +182,7 @@ if __name__ == "__main__":
 
     else:
         print(f"Unknown command: '{command}'")
-        print("Valid commands: predict_default, predict_file, predict_distribution")
+        print("Valid commands: train, predict_default, predict_file, predict_distribution")
         sys.exit(1)
+
+
