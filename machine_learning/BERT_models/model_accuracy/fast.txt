@@ -1,0 +1,88 @@
+Run with a temperature of 1
+
+validation_1.csv
+=============================================
+  Distribution Report (threshold=0.95)
+=============================================
+
+  Malicious Queries:
+  ----------------------------------------
+  Count:              508
+  Mean:               1.0000
+  Std Dev:            0.0000
+  Min:                0.9999
+  Max:                1.0000
+  Median:             1.0000
+  Above Threshold:    508 (100.0%)
+  Below Threshold:    0 (0.0%)
+
+  Benign Queries:
+  ----------------------------------------
+  Count:              492
+  Mean:               0.0928
+  Std Dev:            0.2786
+  Min:                0.0000
+  Max:                1.0000
+  Median:             0.0000
+  Above Threshold:    37 (7.5%)
+  Below Threshold:    455 (92.5%)
+
+=============================================
+
+validation_2.csv
+=============================================
+  Distribution Report (threshold=0.95)
+=============================================
+
+  Malicious Queries:
+  ----------------------------------------
+  Count:              521
+  Mean:               1.0000
+  Std Dev:            0.0000
+  Min:                0.9999
+  Max:                1.0000
+  Median:             1.0000
+  Above Threshold:    521 (100.0%)
+  Below Threshold:    0 (0.0%)
+
+  Benign Queries:
+  ----------------------------------------
+  Count:              479
+  Mean:               0.1018
+  Std Dev:            0.2873
+  Min:                0.0000
+  Max:                1.0000
+  Median:             0.0000
+  Above Threshold:    39 (8.1%)
+  Below Threshold:    440 (91.9%)
+
+=============================================
+
+validation_3.csv
+=============================================
+  Distribution Report (threshold=0.95)
+=============================================
+
+  Malicious Queries:
+  ----------------------------------------
+  Count:              516
+  Mean:               1.0000
+  Std Dev:            0.0000
+  Min:                0.9999
+  Max:                1.0000
+  Median:             1.0000
+  Above Threshold:    516 (100.0%)
+  Below Threshold:    0 (0.0%)
+
+  Benign Queries:
+  ----------------------------------------
+  Count:              484
+  Mean:               0.1046
+  Std Dev:            0.3005
+  Min:                0.0000
+  Max:                1.0000
+  Median:             0.0000
+  Above Threshold:    46 (9.5%)
+  Below Threshold:    438 (90.5%)
+
+=============================================

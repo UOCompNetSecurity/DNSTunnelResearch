@@ -196,22 +196,22 @@ def determine_device() -> str:
         raise ValueError("No devices available")
     return device
 
-def predict_float(query:str, model:AutoModelForSequenceClassification, device: str) -> float:
+def predict_float(query:str, model:AutoModelForSequenceClassification, prediction_temp: float, device: str) -> float:
     query = query.lower().strip().rstrip(".")
     inputs = TOKENIZER(query, return_tensors="pt", truncation=True, max_length=128)
     inputs = {k: v.to(device) for k, v in inputs.items()}
     with torch.no_grad():
         outputs = model(**inputs)
-    probabilities = torch.softmax(outputs.logits, dim=1)
+    probabilities = torch.softmax(outputs.logits / prediction_temp, dim=1)
     return probabilities[0][1].item()  
 
-def predict_binary(query:str, model:AutoModelForSequenceClassification, device: str) -> int:
+def predict_binary(query:str, model:AutoModelForSequenceClassification, prediction_temp: float, device: str) -> int:
     query = query.lower().strip().rstrip('.')
     inputs = TOKENIZER(query, return_tensors="pt", truncation=True, max_length=128)
     inputs = {k: v.to(device) for k, v in inputs.items()}
     with torch.no_grad():
         outputs = model(**inputs)
-    pred = torch.argmax(outputs.logits, dim=1).item()
+    pred = torch.argmax(outputs.logits / prediction_temp, dim=1).item()
 
     return pred
     

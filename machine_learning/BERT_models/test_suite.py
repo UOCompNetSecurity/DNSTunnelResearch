@@ -46,6 +46,7 @@ def print_stats(label: str, preds: list, threshold: float) -> None:
     print(f"  Below Threshold:    {below} ({100 * below / len(arr):.1f}%)")
 
 def predict_default(pretraining_file: str) -> None:
+    temp = 1.0 #default temperature of 1
     hardware = determine_device()
 
     model = AutoModelForSequenceClassification.from_pretrained(pretraining_file)
@@ -53,14 +54,14 @@ def predict_default(pretraining_file: str) -> None:
     model.eval()
 
     for q in DEFAULT_MALICIOUS:
-        pred = predict_float(q, model, hardware)
+        pred = predict_float(q, model, temp, hardware)
         print(f"Malicious Query: {q}, Prediction: {pred}")
 
     for q in DEFAULT_SAFE:
-        pred = predict_float(q, model, hardware)
+        pred = predict_float(q, model, temp, hardware)
         print(f"Non Malicious Query: {q}, Prediction: {pred}")
 
-def predict_queryfile(pretraining_file: str, input_file: str, threshold: float, iterations: int = 1000) -> None:
+def predict_queryfile(pretraining_file: str, input_file: str, temperature: float, threshold: float, iterations: int = 1000) -> None:
     hardware = determine_device()
 
     model = AutoModelForSequenceClassification.from_pretrained(pretraining_file)
@@ -78,7 +79,7 @@ def predict_queryfile(pretraining_file: str, input_file: str, threshold: float, 
     false_negatives = 0
 
     for i in range(iterations):
-        predicted_malicious = predict_float(query_list[i], model, hardware) > threshold
+        predicted_malicious = predict_float(query_list[i], model, temperature, hardware) > threshold
         is_malicious = val_list[i] == 1
         if predicted_malicious and is_malicious:
             true_positives += 1
@@ -96,7 +97,7 @@ def predict_queryfile(pretraining_file: str, input_file: str, threshold: float, 
     print(f"True Negatives: {true_negatives}")
     print(f"False Negatives: {false_negatives}")
 
-def predict_queryfile_distribution(pretraining_file: str, input_file: str, threshold: float, iterations: int = 1000) -> None:
+def predict_queryfile_distribution(pretraining_file: str, input_file: str, temperature: float, threshold: float, iterations: int = 1000) -> None:
     hardware = determine_device()
 
     model = AutoModelForSequenceClassification.from_pretrained(pretraining_file)
@@ -112,7 +113,7 @@ def predict_queryfile_distribution(pretraining_file: str, input_file: str, thres
     benign_predictions = []
 
     for i in range(iterations):
-        predicted_value = predict_float(query_list[i], model, hardware)
+        predicted_value = predict_float(query_list[i], model, temperature, hardware)
         is_malicious = val_list[i] == 1
         if is_malicious:
             malicious_predictions.append(predicted_value)
@@ -134,7 +135,7 @@ if __name__ == "__main__":
     if len(sys.argv) < 2:
         print("Usage:")
         print("  python3 test_suite.py predict_default <pretraining_file>")
-        print("  python3 test_suite.py predict_file <pretraining_file> <input_file> <threshold> [iterations]")
+        print("  python3 test_suite.py predict_binary <pretraining_file> <input_file> <threshold> [iterations]")
         print("  python3 test_suite.py predict_distribution <pretraining_file> <input_file> <threshold> [iterations]")
         sys.exit(1)
 
@@ -146,27 +147,29 @@ if __name__ == "__main__":
             sys.exit(1)
         predict_default(sys.argv[2])
 
-    elif command == "predict_file":
-        if len(sys.argv) < 5 or len(sys.argv) > 6:
-            print("Usage: python3 test_suite.py predict_file <pretraining_file> <input_file> <threshold> [iterations]")
+    elif command == "predict_binary":
+        if len(sys.argv) < 6 or len(sys.argv) > 7:
+            print("Usage: python3 test_suite.py predict_binary <pretraining_file> <input_file> <prediction_temp> <threshold> [iterations]")
             sys.exit(1)
         pretraining_file = sys.argv[2]
         input_file = sys.argv[3]
-        threshold = float(sys.argv[4])
-        iterations = int(sys.argv[5]) if len(sys.argv) == 6 else 1000
-        predict_queryfile(pretraining_file, input_file, threshold, iterations)
+        temp = float(sys.argv[4])
+        threshold = float(sys.argv[5])
+        iterations = int(sys.argv[6]) if len(sys.argv) == 7 else 1000
+        predict_queryfile(pretraining_file, input_file, temp, threshold, iterations)
 
     elif command == "predict_distribution":
-        if len(sys.argv) < 5 or len(sys.argv) > 6:
-            print("Usage: python3 test_suite.py predict_distribution <pretraining_file> <input_file> <threshold> [iterations]")
+        if len(sys.argv) < 6 or len(sys.argv) > 7:
+            print("Usage: python3 test_suite.py predict_distribution <pretraining_file> <input_file> <prediction_temp> <threshold> [iterations]")
             sys.exit(1)
         pretraining_file = sys.argv[2]
         input_file = sys.argv[3]
-        threshold = float(sys.argv[4])
-        iterations = int(sys.argv[5]) if len(sys.argv) == 6 else 1000
-        predict_queryfile_distribution(pretraining_file, input_file, threshold, iterations)
+        temp = float(sys.argv[4])
+        threshold = float(sys.argv[5])
+        iterations = int(sys.argv[6]) if len(sys.argv) == 7 else 1000
+        predict_queryfile_distribution(pretraining_file, input_file, temp, threshold, iterations)
 
     else:
         print(f"Unknown command: '{command}'")
-        print("Valid commands: predict_default, predict_file, predict_distribution")
+        print("Valid commands: predict_default, predict_binary, predict_distribution")
         sys.exit(1)

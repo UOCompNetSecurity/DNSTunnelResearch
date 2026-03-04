@@ -20,17 +20,19 @@ def generate_malicious_query(generator: RandomWord) -> str:
 
     return f"{encoded_text}.{random_characters(3)}.{attacker_domain}"
 
-def list_of_safe_queries(file_path:str, range = 1000) -> list[str]:
-    count = 0
+def list_of_safe_queries(file_path:str, num_queries = 1000) -> list[str]:
     query_list = []
+
     with open(file_path, 'r') as file:
-        for line in file:
-            query_list.append(line.strip())
-            count += 1
-            if count >= range:
-                break 
+        lines_list = file.read().splitlines()
+        num_lines = len(lines_list)
+
+        for i in range(num_queries):
+            idx = rand.randint(0, num_lines - 1)
+            query_list.append(lines_list[idx])
+            
     return query_list
-        
+
 def create_csv(num_lines: int, safe_query_list:list[str], csv_path:str) -> None:
     data = {"Value": [], "Query":[]}
     safe_query_len = len(safe_query_list)
