@@ -1,0 +1,9 @@
+CPU:
+CPU Info: AMD Milan, 128 Cores
+Mean prediciton time for dangerous queries: 0.03610427856445313 ms
+Mean prediciton time for safe queries: 0.0305251145362854 ms
+
+GPU:
+GPU Info: NVIDIA A100
+Mean prediciton time for dangerous queries: 0.00552886962890625
+Mean prediciton time for safe queries: 0.006017811298370361

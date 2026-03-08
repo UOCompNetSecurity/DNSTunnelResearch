@@ -1,7 +1,9 @@
 GPU:
-Mean prediciton time for dangerous queries: 0.0173
-Mean prediciton time for safe queries: 0.0185
+GPU info: Apple M1, 7 Cores
+Mean prediciton time for dangerous queries: 0.0173 ms
+Mean prediciton time for safe queries: 0.0185 ms
 
 CPU:
-Mean prediciton time for dangerous queries: 0.0436
-Mean prediciton time for safe queries: 0.0452
+CPU info: Apple M1, 8 Cores
+Mean prediciton time for dangerous queries: 0.0436 ms
+Mean prediciton time for safe queries: 0.0452 ms

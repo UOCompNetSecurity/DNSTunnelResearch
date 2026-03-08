@@ -68,7 +68,7 @@ export PYTORCH_ENABLE_MPS_FALLBACK=1
 
 # Paths
 PROJECT_DIR=/projects/cis431_531/khogan/DNS_project/machine_learning/BERT_models
-OUTPUT_DIR=$PROJECT_DIR/models/dns_bert_$ARG_TYPE_MODEL_NAME
+OUTPUT_DIR=$PROJECT_DIR/model_weights/dns_bert_$ARG_TYPE_MODEL_NAME
 LOG_DIR=/projects/cis431_531/khogan/DNS_project/machine_learning/logs
 
 mkdir -p $LOG_DIR

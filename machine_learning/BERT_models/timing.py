@@ -49,8 +49,7 @@ def is_available(device_name:str) -> bool:
         return True
     return False
 
-def check_devices(model: AutoModelForSequenceClassification) -> None:
-    device = next(model.parameters()).device
+def check_devices(device:str) -> None:
     if device == "cpu":
         print(f"CPU: {platform.processor()}")
         print(f"CPU cores: {os.cpu_count()}")
@@ -124,6 +123,6 @@ if __name__ == "__main__":
     
     print(f"Running predictions on {d_name}")
     print(f"Device info ...")
-    check_devices(model)
+    check_devices(d_name)
     print(f"Mean prediciton time for dangerous queries: {np.mean(d_times)}")
     print(f"Mean prediciton time for safe queries: {np.mean(s_times)}")

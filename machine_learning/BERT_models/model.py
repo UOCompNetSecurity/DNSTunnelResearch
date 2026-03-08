@@ -18,9 +18,6 @@ os.environ["PYTORCH_ENABLE_MPS_FALLBACK"] = "1"
 #Default Model
 DEFAULT_MODEL_NAME = "amahdaouy/DomURLs_BERT"
 DEFAULT_MODEL = AutoModelForSequenceClassification.from_pretrained(DEFAULT_MODEL_NAME, num_labels=2)
-#Pretrained Model (Already trained on DNS queries)
-PRETRAINED_MODEL_NAME = "models/default"
-PRETRAINED_MODEL = AutoModelForSequenceClassification.from_pretrained(PRETRAINED_MODEL_NAME, num_labels=2)
 #Tokenizer
 TOKENIZER = AutoTokenizer.from_pretrained(DEFAULT_MODEL_NAME)
 
@@ -167,7 +164,7 @@ def train_and_save(train_dataset: Dataset, val_dataset: Dataset, output_name: st
     if model_name == "Default":
         training_model = DEFAULT_MODEL
     else:
-        training_model = PRETRAINED_MODEL
+        training_model = AutoModelForSequenceClassification.from_pretrained(model_name, num_labels=2)
 
     trainer = Trainer(
         model=training_model,
